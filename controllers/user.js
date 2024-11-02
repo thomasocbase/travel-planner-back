@@ -27,15 +27,36 @@ exports.login = async (req, res, next) => {
         if (!valid) {
             return res.status(401).json({ error: 'Incorrect authentication' });
         }
-        res.status(200).json({
-            userId: user._id,
-            token: jwt.sign(
-                { userId: user._id },
-                'TRAVEL_PLANNER_RANDOM_TOKEN',
-                { expiresIn: '24h' }
-            )
+
+        // Token config
+        const token = jwt.sign(
+            { userId: user._id },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        // Send jwt in cookie
+        res.cookie('BEARER', token, {
+            httpOnly: true,
+            secure: true,
+            // sameSite: 'strict',
+            maxAge: 1 * 60 * 60 * 1000,
         });
+
+        res.cookie('CHECKER', user.username, {
+            httpOnly: false,
+            secure: true,
+            maxAge: 1 * 60 * 60 * 1000,
+        });
+
+        res.status(200).json({ userId: user._id, userName: user.username });
     } catch (error) {
         res.status(500).json({ error });
     }
 };
+
+exports.logout = (req, res, next) => {
+    res.clearCookie('BEARER');
+    res.clearCookie('CHECKER');
+    res.status(200).json({ message: 'Logout completed' });
+}
