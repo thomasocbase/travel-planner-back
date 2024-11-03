@@ -1,9 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-const authRoutes = require('./routes/user');
-require('dotenv').config();
 
+// Import routes
+const authRoutes = require('./routes/user');
+const dayRoutes = require('./routes/day');
+const planRoutes = require('./routes/plan');
+const adminRoutes = require('./routes/admin');
+
+// Load environment variables
+require('dotenv').config();
 
 // Connection to MongoDB
 (async () => {
@@ -28,11 +34,11 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.get('/api/', (req, res) => {
-    res.send('Voilà la réponse du serveur !');
-});
 
 app.use('/api/auth', authRoutes);
+app.use('/api/day', dayRoutes);
+app.use('/api/plan', planRoutes);
+app.use('/api/admin', adminRoutes);
 
 
 module.exports = app;
