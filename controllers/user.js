@@ -1,14 +1,18 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Role = require('../models/Role');
 
 exports.signup = async (req, res, next) => {
     try {
         const hash = await bcrypt.hash(req.body.password, 10);
+        const userRole = await Role.findOne({ name: 'user' });
+
         const user = new User({
             username: req.body.username,
             email: req.body.email,
             password: hash,
+            role: userRole._id,
         });
         await user.save();
         res.status(201).json({ message: 'Account created' });
