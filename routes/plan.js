@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const planCtrl = require('../controllers/plan');
 
+router.get('/initial', planCtrl.getInitialPlan);
+
 router.get('/', planCtrl.getAllPlans);
 
 router.get('/user', planCtrl.getUserPlans);

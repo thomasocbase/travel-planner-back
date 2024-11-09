@@ -24,3 +24,12 @@ exports.createActivityTypes = async () => {
         console.log(error);
     }
 };
+
+exports.getAllActivityTypes = async (req, res, next) => {
+    try {
+        const activityTypes = await ActivityType.find();
+        res.status(200).json(activityTypes);
+    } catch (error) {
+        res.status(400).json({ error });
+    }
+};

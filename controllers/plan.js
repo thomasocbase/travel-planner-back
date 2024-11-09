@@ -1,5 +1,39 @@
 const Plan = require('../models/Plan');
 
+// Initial data
+
+const initialPlan = {
+    title: 'My first plan',
+    description: 'This is my first plan',
+    image: 'https://picsum.photos/id/177/800/600',
+    visibilityState: '67292c7e3e797b9c6565b1b2',
+    userId: '67250f1fa0b9612c6157079a',
+}
+
+exports.createInitialPlan = async () => {
+    try {
+        const existingPlan = await Plan.findOne({ title: initialPlan.title });
+        if (!existingPlan) {
+            const newPlan = new Plan(initialPlan);
+            await newPlan.save();
+            console.log('Initial plan created');
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+exports.getInitialPlan = async (req, res, next) => {
+    try {
+        const plan = await Plan.findOne({ _id: '672d03bf69f596a99ba87288' });
+        res.status(200).json(plan);
+    } catch (error) {
+        res.status(404).json({ error });
+    }
+}
+
+// CRUD ops
+
 exports.getAllPlans = async (req, res, next) => {
     try {
         const plans = await Plan.find();

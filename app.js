@@ -7,11 +7,14 @@ const authRoutes = require('./routes/user');
 const dayRoutes = require('./routes/day');
 const planRoutes = require('./routes/plan');
 const adminRoutes = require('./routes/admin')
+const activityTypeRoutes = require('./routes/activityType');
 
 // Import controllers
 const roleCtrl = require('./controllers/role');
 const planVisibilityStatesCtrl = require('./controllers/planVisibilityState');
 const activityTypeCtrl = require('./controllers/activityType');
+const planCtrl = require('./controllers/plan');
+const dayCtrl = require('./controllers/day');
 
 // Load environment variables
 require('dotenv').config();
@@ -43,12 +46,15 @@ app.use((req, res, next) => {
 roleCtrl.createRoles();
 planVisibilityStatesCtrl.createPlanVisibilityStates();
 activityTypeCtrl.createActivityTypes();
+planCtrl.createInitialPlan();
+dayCtrl.createInitialDay();
 
 // Routes
 
 app.use('/api/auth', authRoutes);
-app.use('/api/day', dayRoutes);
 app.use('/api/plan', planRoutes);
+app.use('/api/day', dayRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/activityType', activityTypeRoutes);
 
 module.exports = app;
