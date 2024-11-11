@@ -29,6 +29,7 @@ exports.createInitialDay = async () => {
 exports.getDaysByPlan = async (req, res, next) => {
     try {
         const days = await Day.find({ planId: req.params.planId });
+        console.log(days);
         res.status(200).json(days);
     } catch (error) {
         res.status(400).json({ error });
@@ -47,7 +48,7 @@ exports.addDay = async (req, res, next) => {
             planId: req.body.planId,
         });
         await day.save();
-        res.status(201).json({ message: 'Day created' });
+        res.status(201).json({ message: 'Day created', day: day });
     } catch (error) {
         res.status(400).json({ error });
     }
@@ -56,11 +57,9 @@ exports.addDay = async (req, res, next) => {
 exports.updateDayTitle = async (req, res, next) => {
     try {
         let dayToUpdate = await Day.findOne({ _id: req.params.id });
-        dayToUpdate = { 
-            ...dayToUpdate, 
-            title: req.body.title,
-            updatedAt: Date.now(),
-        };
+        dayToUpdate.title = req.body.title,
+        dayToUpdate.updatedAt = Date.now(),
+        
         await dayToUpdate.save();
         res.status(200).json({ message: 'Day title updated' });
     } catch (error) {
@@ -71,11 +70,10 @@ exports.updateDayTitle = async (req, res, next) => {
 exports.updateDayOrder = async (req, res, next) => {
     try {
         let dayToUpdate = await Day.findOne({ _id: req.params.id });
-        dayToUpdate = { 
-            ...dayToUpdate, 
-            order: req.body.order,
-            updatedAt: Date.now(),
-        };
+        
+        dayToUpdate.order = req.body.order,
+        dayToUpdate.updatedAt = Date.now(),
+        
         await dayToUpdate.save();
         res.status(200).json({ message: 'Day order updated' });
     } catch (error) {

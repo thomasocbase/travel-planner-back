@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const daySchema = mongoose.Schema({
-    title: { type: String, required: false },
-    order: { type: Number, required: false },
+    title: { type: String, required: true },
+    order: { type: Number, required: true },
     duration: { type: Number },
     budget: { type: Number },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false },

@@ -15,6 +15,7 @@ const planVisibilityStatesCtrl = require('./controllers/planVisibilityState');
 const activityTypeCtrl = require('./controllers/activityType');
 const planCtrl = require('./controllers/plan');
 const dayCtrl = require('./controllers/day');
+const activityCtrl = require('./controllers/activity');
 
 // Load environment variables
 require('dotenv').config();
@@ -48,6 +49,7 @@ planVisibilityStatesCtrl.createPlanVisibilityStates();
 activityTypeCtrl.createActivityTypes();
 planCtrl.createInitialPlan();
 dayCtrl.createInitialDay();
+activityCtrl.createInitialActivities();
 
 // Routes
 
