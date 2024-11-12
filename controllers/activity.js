@@ -130,12 +130,105 @@ exports.createInitialActivities = async () => {
     }
 };
 
+// Validation
+const validateActivity = (req) => {
+    if (req.body.title === '' || req.body.title.length > 50) {
+        return 'Title must be between 1 and 50 characters';
+    }
+
+    if (req.body.description && req.body.description.length > 500) {
+        return 'Description must be between 1 and 500 characters';
+    }
+
+    if (req.body.url && !/^(http|https):\/\/[^ "]+$/.test(req.body.url)) {
+        return 'URL must be valid';
+    }
+
+    if (req.body.price && req.body.price < 0 || isNaN(req.body.price)) {
+        return 'Price must be a positive number';
+    }
+
+    if (req.body.timeAllocation && req.body.timeAllocation < 0 || isNaN(req.body.timeAllocation)) {
+        return 'Time allocation must be a positive number';
+    }
+
+    if (req.body.location && req.body.location.length > 50) {
+        return 'Location must be between 1 and 50 characters';
+    }
+
+    return '';
+}
+
 // CRUD ops
 
 exports.getActivitiesByPlan = async (req, res, next) => {
     try {
         const activities = await Activity.find({ planId: req.params.planId }).populate('activityType', 'name');
         res.status(200).json(activities);
+    } catch (error) {
+        res.status(400).json({ error });
+    }
+}
+
+exports.addActivity = async (req, res, next) => {
+    try {
+        // Validation
+        const validationMessage = validateActivity(req);
+        if (validationMessage !== '') {
+            return res.status(406).json({ message: validationMessage });
+        }
+
+        // Create new activity
+        let newActivity = {
+            title: req.body.title,
+            description: req.body.description,
+            image: req.body.image,
+            url: req.body.url,
+            price: req.body.price,
+            timeAllocation: req.body.timeAllocation,
+            activityType: req.body.activityType._id,
+            location: req.body.location,
+            order: req.body.order,
+            planId: req.body.planId,
+            dayId: req.body.dayId,
+            isArchived: req.body.isArchived,
+        }
+
+        await Activity.create(newActivity);
+        newActivity = await Activity.findOne(newActivity)
+        res.status(201).json({ message: 'Activity created', activity: newActivity });
+    } catch (error) {
+        res.status(400).json({ error });
+    }
+}
+
+exports.updateActivity = async (req, res, next) => {
+    try {
+        // Validation
+        const validationMessage = validateActivity(req);
+        if (validationMessage) {
+            return res.status(406).json({ message: validationMessage });
+        }
+
+        // Update activity
+        let activityToUpdate = await Activity.findOne({ _id: req.params.id });
+
+        activityToUpdate.title = req.body.title;
+        activityToUpdate.description = req.body.description;
+        activityToUpdate.image = req.body.image;
+        activityToUpdate.url = req.body.url;
+        activityToUpdate.price = req.body.price;
+        activityToUpdate.timeAllocation = req.body.timeAllocation;
+        activityToUpdate.activityType = req.body.activityType;
+        activityToUpdate.location = req.body.location;
+        activityToUpdate.order = req.body.order;
+        activityToUpdate.planId = req.body.planId;
+        activityToUpdate.dayId = req.body.dayId;
+        activityToUpdate.isArchived = req.body.isArchived;
+        activityToUpdate.updatedAt = Date.now();
+
+        await activityToUpdate.save();
+        res.status(200).json({ message: 'Activity updated', activity: activityToUpdate });
     } catch (error) {
         res.status(400).json({ error });
     }
