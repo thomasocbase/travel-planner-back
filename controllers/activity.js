@@ -194,6 +194,7 @@ exports.addActivity = async (req, res, next) => {
             isArchived: req.body.isArchived,
         }
 
+        // Send to DB
         await Activity.create(newActivity);
         newActivity = await Activity.findOne(newActivity)
         res.status(201).json({ message: 'Activity created', activity: newActivity });
@@ -219,7 +220,7 @@ exports.updateActivity = async (req, res, next) => {
         activityToUpdate.url = req.body.url;
         activityToUpdate.price = req.body.price;
         activityToUpdate.timeAllocation = req.body.timeAllocation;
-        activityToUpdate.activityType = req.body.activityType;
+        activityToUpdate.activityType = req.body.activityType._id;
         activityToUpdate.location = req.body.location;
         activityToUpdate.order = req.body.order;
         activityToUpdate.planId = req.body.planId;
@@ -227,8 +228,18 @@ exports.updateActivity = async (req, res, next) => {
         activityToUpdate.isArchived = req.body.isArchived;
         activityToUpdate.updatedAt = Date.now();
 
+        // Send to DB
         await activityToUpdate.save();
         res.status(200).json({ message: 'Activity updated', activity: activityToUpdate });
+    } catch (error) {
+        res.status(400).json({ error });
+    }
+}
+
+exports.deleteActivity = async (req, res, next) => {
+    try {
+        await Activity.deleteOne({ _id: req.params.id });
+        res.status(200).json({ message: 'Activity deleted' });
     } catch (error) {
         res.status(400).json({ error });
     }
