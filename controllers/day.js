@@ -29,7 +29,6 @@ exports.createInitialDay = async () => {
 exports.getDaysByPlan = async (req, res, next) => {
     try {
         const days = await Day.find({ planId: req.params.planId });
-        console.log(days);
         res.status(200).json(days);
     } catch (error) {
         res.status(400).json({ error });
@@ -38,7 +37,6 @@ exports.getDaysByPlan = async (req, res, next) => {
 
 exports.addDay = async (req, res, next) => {
     try {
-        console.log(req.body);
         const day = new Day({
             title: req.body.title,
             order: req.body.order,

@@ -8,11 +8,10 @@ router.get('/initial', planCtrl.getInitialPlan);
 
 // Plan routes
 
-router.get('/', planCtrl.getAllPlans);
-router.get('/user', planCtrl.getUserPlans);
+router.get('/user/', planCtrl.getUserPlans);
 router.get('/:id', planCtrl.getOnePlan);
 router.post('/', planCtrl.addPlan);
-router.put('/:id', planCtrl.modifyPlan);
+router.put('/:id', planCtrl.updatePlan);
 router.delete('/:id', planCtrl.deletePlan);
 
 // Activity routes

@@ -6,7 +6,7 @@ const initialPlan = {
     title: 'My first plan',
     description: 'This is my first plan',
     image: 'https://picsum.photos/id/177/800/600',
-    visibilityState: '67292c7e3e797b9c6565b1b2',
+    planVisibilityState: '67292c7e3e797b9c6565b1b2',
     userId: '67250f1fa0b9612c6157079a',
 }
 
@@ -34,15 +34,6 @@ exports.getInitialPlan = async (req, res, next) => {
 
 // CRUD ops
 
-exports.getAllPlans = async (req, res, next) => {
-    try {
-        const plans = await Plan.find();
-        res.status(200).json(plans);
-    } catch (error) {
-        res.status(400).json({ error });
-    }
-};
-
 exports.getUserPlans = async (req, res, next) => {
     try {
         const userId = req.auth.userId;
@@ -60,6 +51,7 @@ exports.getUserPlans = async (req, res, next) => {
 exports.getOnePlan = async (req, res, next) => {
     try {
         const plan = await Plan.findOne({ _id: req.params.id });
+        // populate not working, need to fix
         res.status(200).json(plan);
     } catch (error) {
         res.status(404).json({ error });
@@ -74,7 +66,7 @@ exports.addPlan = async (req, res, next) => {
             title: req.body.title,
             description: req.body.description,
             image: req.body.image,
-            status: req.body.status,
+            visibilityState: req.body.visibilityState,
             userId: userId,
         });
         await plan.save();
@@ -84,10 +76,22 @@ exports.addPlan = async (req, res, next) => {
     }
 };
 
-exports.modifyPlan = async (req, res, next) => {
+exports.updatePlan = async (req, res, next) => {
     try {
-        await Plan.updateOne({ _id: req.params.id }, { ...req.body });
-        res.status(200).json({ message: 'Plan updated' });
+        let plan = await Plan.findOne({ _id: req.params.id });
+
+        console.log('req.body', req.body);
+
+        plan.title = req.body.title;
+        plan.description = req.body.description;
+        plan.image = req.body.image;
+        plan.planVisibilityState = req.body.planVisibilityState;
+        plan.userId = req.body.userId;
+        plan.updatedAt = Date.now();
+
+        console.log('plan', plan);
+        await plan.save();        
+        res.status(200).json({ message: 'Plan updated', plan });
     } catch (error) {
         res.status(400).json({ error });
     }

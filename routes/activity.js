@@ -4,5 +4,6 @@ const activityCtrl = require('../controllers/activity');
 
 router.post('/', activityCtrl.addActivity);
 router.put('/:id', activityCtrl.updateActivity);
+router.delete('/:id', activityCtrl.deleteActivity);
 
 module.exports = router;

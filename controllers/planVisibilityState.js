@@ -1,4 +1,4 @@
-const PlanVisibilityStates = require('../models/PlanVisibilityState');
+const PlanVisibilityState = require('../models/PlanVisibilityState');
 
 const states = [
     { label: 'public' },
@@ -9,9 +9,9 @@ const states = [
 exports.createPlanVisibilityStates = async () => {
     try {
         for (const state of states) {
-            const existingState = await PlanVisibilityStates.findOne({ label: state.label });
+            const existingState = await PlanVisibilityState.findOne({ label: state.label });
             if (!existingState) {
-                const newState = new PlanVisibilityStates(state);
+                const newState = new PlanVisibilityState(state);
                 await newState.save();
             }
         }

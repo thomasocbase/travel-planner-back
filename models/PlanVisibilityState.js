@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const planVisibilityStatesSchema = mongoose.Schema({
+const planVisibilityStateSchema = mongoose.Schema({
     label: { type: String, required: true },
 });
 
-module.exports = mongoose.model('PlanVisibilityStates', planVisibilityStatesSchema);
+module.exports = mongoose.model('PlanVisibilityState', planVisibilityStateSchema);

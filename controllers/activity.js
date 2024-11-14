@@ -184,8 +184,8 @@ exports.addActivity = async (req, res, next) => {
             description: req.body.description,
             image: req.body.image,
             url: req.body.url,
-            price: req.body.price,
-            timeAllocation: req.body.timeAllocation,
+            price: req.body.price === '' ? 0 : req.body.price,
+            timeAllocation: req.body.timeAllocation === '' ? 0 : req.body.timeAllocation,
             activityType: req.body.activityType._id,
             location: req.body.location,
             order: req.body.order,
@@ -218,8 +218,8 @@ exports.updateActivity = async (req, res, next) => {
         activityToUpdate.description = req.body.description;
         activityToUpdate.image = req.body.image;
         activityToUpdate.url = req.body.url;
-        activityToUpdate.price = req.body.price;
-        activityToUpdate.timeAllocation = req.body.timeAllocation;
+        activityToUpdate.price = req.body.price === '' ? 0 : req.body.price;
+        activityToUpdate.timeAllocation = req.body.timeAllocation === '' ? 0 : req.body.timeAllocation;
         activityToUpdate.activityType = req.body.activityType._id;
         activityToUpdate.location = req.body.location;
         activityToUpdate.order = req.body.order;
