@@ -9,6 +9,7 @@ const planRoutes = require('./routes/plan');
 const adminRoutes = require('./routes/admin')
 const activityTypeRoutes = require('./routes/activityType');
 const activityRoutes = require('./routes/activity');
+const planVisibilityStateRoutes = require('./routes/planVisibilityState');
 
 // Import controllers
 const roleCtrl = require('./controllers/role');
@@ -69,5 +70,6 @@ app.use('/api/day', authAccess, dayRoutes);
 app.use('/api/admin', authAccess, adminAccess, adminRoutes);
 app.use('/api/activityType', activityTypeRoutes);
 app.use('/api/activity', authAccess, activityRoutes);
+app.use('/api/planVisibilityState', planVisibilityStateRoutes);
 
 module.exports = app;

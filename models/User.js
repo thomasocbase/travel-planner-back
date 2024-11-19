@@ -7,7 +7,7 @@ const userSchema = mongoose.Schema({
     password: { type: String, required: true },
     description: { type: String },
     imagePath: { type: String },
-    role: { type: Schema.Types.ObjectId, ref: 'roles' },
+    role: { type: Schema.Types.ObjectId, ref: 'Role' },
     isBanned: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }

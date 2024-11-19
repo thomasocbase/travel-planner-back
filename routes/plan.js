@@ -4,7 +4,7 @@ const planCtrl = require('../controllers/plan');
 const activityCtrl = require('../controllers/activity');
 const dayCtrl = require('../controllers/day');
 
-router.get('/initial', planCtrl.getInitialPlan);
+// router.get('/initial', planCtrl.getInitialPlan);
 
 // Plan routes
 

@@ -23,14 +23,14 @@ exports.createInitialPlan = async () => {
     }
 };
 
-exports.getInitialPlan = async (req, res, next) => {
-    try {
-        const plan = await Plan.findOne({ _id: '672d03bf69f596a99ba87288' });
-        res.status(200).json(plan);
-    } catch (error) {
-        res.status(404).json({ error });
-    }
-}
+// exports.getInitialPlan = async (req, res, next) => {
+//     try {
+//         const plan = await Plan.findOne({ _id: '672d03bf69f596a99ba87288' });
+//         res.status(200).json(plan);
+//     } catch (error) {
+//         res.status(404).json({ error });
+//     }
+// }
 
 // CRUD ops
 
@@ -50,8 +50,7 @@ exports.getUserPlans = async (req, res, next) => {
 
 exports.getOnePlan = async (req, res, next) => {
     try {
-        const plan = await Plan.findOne({ _id: req.params.id });
-        // populate not working, need to fix
+        const plan = await Plan.findOne({ _id: req.params.id }).populate('planVisibilityState');
         res.status(200).json(plan);
     } catch (error) {
         res.status(404).json({ error });

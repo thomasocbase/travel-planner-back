@@ -20,3 +20,12 @@ exports.createPlanVisibilityStates = async () => {
         console.log(error);
     }
 };
+
+exports.getPlanVisibilityStates = async (req, res, next) => {
+    try {
+        const states = await PlanVisibilityState.find();
+        res.status(200).json(states);
+    } catch (error) {
+        res.status(400).json({ error });
+    }
+};
